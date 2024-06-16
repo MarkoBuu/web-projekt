@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {UserContext} from "../UserContext.jsx";
 import {Link, Navigate, useParams} from "react-router-dom";
 import axios from "axios";
-import PlacesPage from "./PlacesPage.jsx";
+import MyListingsPage from "./MyListingsPage.jsx";
 import AccountNav from "../AccountNav.jsx";
 
 export default function ProfilePage(){
@@ -39,7 +39,7 @@ export default function ProfilePage(){
                 </div>
             )}
             {subpage === "places" && (
-                <PlacesPage/>
+                <MyListingsPage/>
             )}
         </div>
     );
