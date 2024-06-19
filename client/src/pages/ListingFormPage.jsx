@@ -56,7 +56,7 @@ export default function ListingFormPage(){
     }
 
     return(
-            <div>
+            <div className="py-4 px-8">
                 <AccountNav />
                 <form onSubmit={savePlace}>
                     {inputHeader("Item Title")}

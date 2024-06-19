@@ -12,7 +12,7 @@ export default function AllPurchasesPage() {
         });
     }, []);
     return(
-        <div>
+        <div className="py-4 px-8">
             <AccountNav />
             <div>
                 {bookings?.length > 0 && bookings.map((booking) => (

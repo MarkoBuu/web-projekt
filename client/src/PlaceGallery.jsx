@@ -31,27 +31,20 @@ export default function PlaceGallery({place}) {
 
     return (
         <div className="relative">
-            <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-3xl overflow-hidden">
+            <div className="grid gap-2 grid-cols-2 rounded-3xl overflow-hidden">
                 <div>
                     {place.photos?.[0] && (
                         <div>
                             <Image onClick={() => setShowAllPhotos(true)}
-                                   className="aspect-square cursor-pointer object-cover" src={place.photos[0]} alt=""/>
+                                   className="aspect-square cursor-pointer object-cover rounded-2xl" src={place.photos[0]} alt=""/>
                         </div>
                     )}
                 </div>
                 <div className="grid">
                     {place.photos?.[1] && (
                         <Image onClick={() => setShowAllPhotos(true)}
-                               className="aspect-square cursor-pointer object-cover" src={place.photos[1]} alt=""/>
+                               className="aspect-square cursor-pointer object-cover rounded-2xl" src={place.photos[1]} alt=""/>
                     )}
-                    <div className="overflow-hidden">
-                        {place.photos?.[2] && (
-                            <Image onClick={() => setShowAllPhotos(true)}
-                                   className="aspect-square cursor-pointer object-cover relative top-2"
-                                   src={place.photos[2]} alt=""/>
-                        )}
-                    </div>
                 </div>
             </div>
             <button onClick={() => setShowAllPhotos(true)}

@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import PlaceGallery from "../PlaceGallery";
 
-
 export default function PurchasePage() {
     const {id} = useParams();
     const [booking,setBooking] = useState(null);
@@ -23,7 +22,7 @@ export default function PurchasePage() {
     }
 
     return (
-        <div className="my-8">
+        <div className="my-8 py-4 px-8 bg-gray-100">
             <h1 className="text-3xl">{booking.place.title}</h1>
             <a className="flex gap-1 my-3 font-semibold underline" target="_blank"
                href={"https://maps.google.com/?q=" + booking.place.address}>

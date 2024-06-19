@@ -30,7 +30,7 @@ export default function ProfilePage(){
         return  <Navigate to={redirect} />
     }
     return(
-        <div>
+        <div className="py-4 px-8">
             <AccountNav />
             {subpage === "profile" && (
                 <div className="text-center max-w-lg mx-auto">
