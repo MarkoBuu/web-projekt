@@ -8,5 +8,5 @@ const bookingSchema = new mongoose.Schema({
     price: Number,
 });
 
-const BookingModel = mongoose.model("Booking", bookingSchema);
+const BookingModel = mongoose.model("Purchase", bookingSchema);
 module.exports = BookingModel;

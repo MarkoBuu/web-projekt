@@ -1,13 +1,42 @@
-import {Link} from "react-router-dom"
-import {UserContext} from "./UserContext.jsx";
-import {useContext} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext.jsx";
+import { useContext, useState, useEffect, useRef } from "react";
 
-export default function Header(){
-    const {user} = useContext(UserContext)
-    return(
-        <div className="py-4 px-8 " >
-            <header className="flex justify-between  ">
-                <Link to={"/"} className="flex items-center gap-1  ">
+export default function Header() {
+    const { user } = useContext(UserContext);
+    const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+    const navbarRef = useRef();
+    const navigate = useNavigate();
+
+    const toggleNavbar = () => {
+        setIsNavbarOpen(!isNavbarOpen);
+    };
+
+    const handleClickOutside = (event) => {
+        if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+            setIsNavbarOpen(false);
+        }
+    };
+
+    const handleButtonClick = () => {
+        if (user) {
+            navigate("/account");
+        } else {
+            toggleNavbar();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <div className="py-4 px-8 bg-gray-50 relative">
+            <header className="flex justify-between">
+                <Link to={"/"} className="flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-8 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round"
@@ -17,35 +46,37 @@ export default function Header(){
                         BugStation
                     </span>
                 </Link>
-                <button className="flex gap-2 border border-gray-300 bg-white rounded-full py-2 px-4 shadow-md shadow-gray-300">
-                    <div>Search by game title</div>
+                <div className="flex gap-2 border border-gray-300 bg-white rounded-full px-4 items-center shadow-md shadow-gray-300" style={{ height: "2.5rem" }}>
                     <button className="bg-primary text-white p-1 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                             stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round"
-                                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                     </button>
-                </button>
-                <Link to={user? "/account":"/login"} className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                         stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round"
-                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-                    </svg>
-                    <div className="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                             stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round"
-                                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    <input type="text" placeholder="Search BugStation" className="bg-white border-none outline-none flex-grow placeholder-gray-400" style={{ paddingLeft: "0.5rem", height: "100%" }} />
+                </div>
+                <div className="relative" ref={navbarRef}>
+                    <button onClick={handleButtonClick} className="flex items-center gap-2 border border-gray-300 bg-white rounded-full py-2 px-4 shadow-md shadow-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
-                    </div>
-                    {!!user && (
-                        <div>
-                            {user.name}
+                        <div className="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </div>
+                        {!!user && (
+                            <div>
+                                {user.name}
+                            </div>
+                        )}
+                    </button>
+                    {!user && isNavbarOpen && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
+                            <Link to="/login" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Login</Link>
+                            <Link to="/register" className="block px-4 py-2 text-gray-700 hover:bg-gray-200">Register</Link>
                         </div>
                     )}
-                </Link>
+                </div>
             </header>
         </div>
     );

@@ -26,13 +26,13 @@ app.use(cors({
 
 mongoose.connect(process.env.MONGO_URL);
 
-function getUserDataFromReq(req){
+function getUserDataFromReq(req) {
     return new Promise((resolve, reject) => {
         jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
             resolve(userData);
         });
-    })
+    });
 }
 
 app.get("/test", (req, res) => {
@@ -179,10 +179,33 @@ app.post("/bookings", async (req, res)=>{
     });
 });
 
-
 app.get("/bookings", async (req, res) => {
     const userData = await getUserDataFromReq(req);
     res.json( await Purchase.find({user:userData.id}).populate('place') );
+});
+
+app.delete("/places/:id", async (req, res) => {
+    const { token } = req.cookies;
+    const { id } = req.params;
+    try {
+        jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+            if (err) throw err;
+            try {
+                const placeDoc = await Listing.findById(id);
+                if (userData.id === placeDoc.owner.toString()) {
+                    await placeDoc.deleteOne();
+                    res.json({ success: true });
+                } else {
+                    res.json("error");
+                }
+            } catch (findError) {
+                res.json("error");
+            }
+        });
+    } catch (error) {
+        console.error("Unexpected Error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
 
 
